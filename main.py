@@ -11,13 +11,19 @@ class Main:
         self.ui.mostrar_menu()
         
         # Pedir los minitérminos al usuario
-        self.minterms = self.ui.ingresar_minterminos()
+        listaMinterminos = self.ui.ingresar_minterminos()
+
+        # Se realiza una copia de la lista para calcular el número de variables que se requieren
+        copiaListaMinterminos = listaMinterminos
+        
+        # Se obtiene el número de variables necesario del mayor número en la lista
+        numeroVariables = self.ui.calcular_variables(copiaListaMinterminos)
+        print("\nNúmero de variables requeridas: ", numeroVariables)
 
         # Crear una instancia de la clase Reduccion con los minitérminos
         reduccion = Reduccion(self.minterms)
 
-        # Mostrar la tabla con los minitérminos y sus representaciones binarias
-        reduccion.mostrar_tabla()
+        
 
 if __name__ == "__main__":
     main = Main()
