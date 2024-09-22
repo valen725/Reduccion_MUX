@@ -23,8 +23,8 @@ class Main:
         # Se obtiene el número de variables necesario del mayor número en la lista
         numero_variables = reduccion.calcular_variables(copia_lista_minterminos)
 
-        print("yes")
-        print("melo")
+        variables_selectoras = reduccion.asignar_variable_control(numero_variables)
+        print("\nEl número de variables selectoras (s) es: ", variables_selectoras)
 
 if __name__ == "__main__":
     main = Main()

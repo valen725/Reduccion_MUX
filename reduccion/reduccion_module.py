@@ -16,3 +16,13 @@ class Reduccion:
     
     def crear_tabla_verdad(self):
         print("Esta es la tabla de verdad")
+
+    def asignar_variable_control(self, numeroVariables):
+        # Asigna la variable de control por defecto (A) o selecciona la que cambia menos
+        # En este caso, tomamos por defecto la 'A', pero puedes extender esta lógica si lo necesitas.
+        variable_control = 'A'
+        print(f"\nLa variable de control asignada es: {variable_control}")
+        
+        # Calcular el número de variables selectoras
+        variables_selectoras = numeroVariables - 1  # Fórmula s = n - 1
+        return variables_selectoras
