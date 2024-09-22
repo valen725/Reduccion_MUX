@@ -13,3 +13,6 @@ class Reduccion:
         numero_mayor = max(lista_minterminos)
         numero_variables = len(bin(numero_mayor)) - 2
         return numero_variables
+    
+    def crear_tabla_verdad(self):
+        print("Esta es la tabla de verdad")
