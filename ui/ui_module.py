@@ -2,7 +2,7 @@ class UI:
     def mostrar_menu(self):
         print("\t╔══════════════════════════════════════════════════╗")
         print("\t║                    REDUCCIÓN MUX                 ║")
-        print("\t╚══════════════════════════════════════════════════╝====\n")
+        print("\t╚══════════════════════════════════════════════════╝\n")
 
     def ingresar_minterminos(self):
         # Solicitar entrada al usuario usando comas como separadores
@@ -11,7 +11,3 @@ class UI:
         listaMinterminos = sorted(list(map(int, minTerminos.split(',')))) # Convertir a enteros y organizar la lista de menor a mayor
         return listaMinterminos
 
-    def calcular_variables(self, listaMinterminos):
-        numeroMayor = max(listaMinterminos)
-        numeroVariables = len(bin(numeroMayor)) - 2
-        return numeroVariables

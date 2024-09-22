@@ -9,4 +9,7 @@ class Reduccion:
         # Convierte un número decimal a binario con un número fijo de bits
         return format(numero, f'0{self.num_bits}b')
 
-    
+    def calcular_variables(self, listaMinterminos):
+        numeroMayor = max(listaMinterminos)
+        numeroVariables = len(bin(numeroMayor)) - 2
+        return numeroVariables
