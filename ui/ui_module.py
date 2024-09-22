@@ -19,3 +19,15 @@ class UI:
         headers = list(string.ascii_uppercase[:num_bits]) + ['Salida']  # 'A', 'B', 'C', etc.
         # Imprimir la tabla usando la librería tabulate
         print(tabulate(tabla, headers=headers, tablefmt="grid"))
+
+    def mostrar_num_entradas(self,numero_variables):
+        print("Numero de entradas iniciales del MUX: ", 2 ** numero_variables )
+
+
+    def mostrar_variables_selectoras(self, numero_variables_iniciales, numero_variables_selectoras):
+        # Muestra el número de variables iniciales y selectoras
+        print(f"\nNúmero de variables selectoras iniciales: {numero_variables_iniciales}")
+        print(f"Número de variables selectoras después de la reducción: {numero_variables_selectoras}")
+
+    def mostrar_num_variables_reducidas(self,numero_entradas):
+        print("Numero de entradas del MUX, luego, de realizar la reducción:  ",numero_entradas )
