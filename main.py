@@ -23,8 +23,19 @@ class Main:
         # Se obtiene el número de variables necesario del mayor número en la lista
         numero_variables = reduccion.calcular_variables(copia_lista_minterminos)
 
-        variables_selectoras = reduccion.asignar_variable_control(numero_variables)
-        print("\nEl número de variables selectoras (s) es: ", variables_selectoras)
+        #  Mostrar las variables iniciales requeridas
+        self.ui.mostrar_num_variables(numero_variables)
+
+        # Asignar la variable de control y obtener el número de variables selectoras
+        numero_variables_selectoras = reduccion.asignar_variable_control(numero_variables)
+        
+        # Mostrar las variables iniciales y selectoras usando la UI
+        self.ui.mostrar_variables_selectoras(numero_variables, numero_variables_selectoras)
+
+        # Recalcular el número de entradas usando el número de variables selectoras
+        numero_entradas = reduccion.recalcular_entradas(numero_variables_selectoras)
+        self.ui.mostrar_num_variables_reducidas(numero_entradas)
+
 
 if __name__ == "__main__":
     main = Main()
