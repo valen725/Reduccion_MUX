@@ -22,7 +22,9 @@ class Main:
         
         # Se obtiene el número de variables necesario del mayor número en la lista
         numero_variables = reduccion.calcular_variables(copia_lista_minterminos)
-       print("esss")
+
+        print("yes")
+        print("melo")
 
 if __name__ == "__main__":
     main = Main()
