@@ -1,4 +1,3 @@
-# reduccion/reduccion_module.py
 from tabulate import tabulate
 
 class Reduccion:
