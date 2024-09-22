@@ -8,6 +8,6 @@ class UI:
         # Solicitar entrada al usuario usando comas como separadores
         minTerminos = input("Ingrese los mintérminos separados por comas -> Ej. 1,4,6,7,8,9: ")
         # Dividir la cadena de entrada en función de las comas
-        listaMinterminos = sorted(list(map(int, minTerminos.split(',')))) # Convertir a enteros y organizar la lista de menor a mayor
-        return listaMinterminos
+        lista_minterminos = sorted(list(map(int, minTerminos.split(',')))) # Convertir a enteros y organizar la lista de menor a mayor
+        return lista_minterminos
 

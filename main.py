@@ -12,16 +12,16 @@ class Main:
         self.ui.mostrar_menu()
 
         # Pedir los minitérminos al usuario
-        listaMinterminos = self.ui.ingresar_minterminos()
+        lista_minterminos = self.ui.ingresar_minterminos()
 
         # Se realiza una copia de la lista para calcular el número de variables que se requieren
-        copiaListaMinterminos = listaMinterminos.copy()  # Hacemos una copia para futuras manipulaciones
+        copia_lista_minterminos = lista_minterminos.copy()  # Hacemos una copia para futuras manipulaciones
         
         # Crear una instancia de la clase Reduccion con los minitérminos
-        reduccion = Reduccion(listaMinterminos)  # Ahora listaMinterminos tiene los datos
+        reduccion = Reduccion(lista_minterminos)  # Ahora listaMinterminos tiene los datos
         
         # Se obtiene el número de variables necesario del mayor número en la lista
-        numeroVariables = reduccion.calcular_variables(copiaListaMinterminos)
+        numero_variables = reduccion.calcular_variables(copia_lista_minterminos)
        
 
 if __name__ == "__main__":
