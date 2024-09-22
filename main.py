@@ -23,21 +23,12 @@ class Main:
         # Se obtiene el número de variables necesario del mayor número en la lista
         numero_variables = reduccion.calcular_variables(copia_lista_minterminos)
 
-        #  Mostrar las variables iniciales requeridas
-        self.ui.mostrar_num_variables(numero_variables)
+        # Construccion de la tabla de verdad
+        tabla_verdad,numero_bits = reduccion.crear_tabla_verdad()
+        self.ui.imprimir_tabla_verdad(tabla_verdad,numero_bits)
 
-        # Asignar la variable de control y obtener el número de variables selectoras
-        numero_variables_selectoras = reduccion.asignar_variable_control(numero_variables)
-        
-        # Mostrar las variables iniciales y selectoras usando la UI
-        self.ui.mostrar_variables_selectoras(numero_variables, numero_variables_selectoras)
-
-        # Recalcular el número de entradas usando el número de variables selectoras
-        numero_entradas = reduccion.recalcular_entradas(numero_variables_selectoras)
-        self.ui.mostrar_num_variables_reducidas(numero_entradas)
-
-        
-
+        print("yes")
+        print("melo")
 
 if __name__ == "__main__":
     main = Main()
