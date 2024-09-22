@@ -36,6 +36,8 @@ class Main:
         numero_entradas = reduccion.recalcular_entradas(numero_variables_selectoras)
         self.ui.mostrar_num_variables_reducidas(numero_entradas)
 
+        
+
 
 if __name__ == "__main__":
     main = Main()
