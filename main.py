@@ -23,6 +23,10 @@ class Main:
         # Se obtiene el número de variables necesario del mayor número en la lista
         numero_variables = reduccion.calcular_variables(copia_lista_minterminos)
 
+        # Construccion de la tabla de verdad
+        tabla_verdad,numero_bits = reduccion.crear_tabla_verdad()
+        self.ui.imprimir_tabla_verdad(tabla_verdad,numero_bits)
+
         print("yes")
         print("melo")
 

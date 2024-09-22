@@ -15,4 +15,15 @@ class Reduccion:
         return numero_variables
     
     def crear_tabla_verdad(self):
-        print("Esta es la tabla de verdad")
+        # Número total de combinaciones (2^n)
+        total_combinaciones = 2 ** self.num_bits
+        tabla = []
+
+        # Generar todas las combinaciones posibles
+        for i in range(total_combinaciones):
+            combinacion_binaria = self.decimal_a_binario(i)  # Obtener combinación en binario
+            es_minterm = 1 if i in self.minterms else 0  # Verificar si es minterm (1) o no (0)
+            fila = list(combinacion_binaria) + [es_minterm]  # Agregar la combinación con su valor
+            tabla.append(fila)
+        
+        return tabla, self.num_bits
