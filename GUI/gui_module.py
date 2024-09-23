@@ -1,6 +1,6 @@
 # gui/gui_module.py
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QMessageBox
-from PyQt5.QtGui import QPixmap
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QMessageBox
+from PyQt6.QtGui import QPixmap
 from reduccion.reduccion_module import Reduccion
 import string
 

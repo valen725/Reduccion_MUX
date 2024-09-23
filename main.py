@@ -1,8 +1,8 @@
 # main.py
 import sys
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication
 from ui.ui_module import UI
-from GUI.gui_module import GUI  # El nuevo GUI basado en PyQt5
+from GUI.gui_module import GUI  # El nuevo GUI basado en PyQt6
 from reduccion.reduccion_module import Reduccion
 
 class Main:
@@ -24,11 +24,11 @@ class Main:
             self.interface = UI()
 
     def iniciar_gui(self):
-        # Inicializamos la GUI si el usuario la elige (PyQt5)
+        # Inicializamos la GUI si el usuario la elige (PyQt6)
         app = QApplication(sys.argv)
         self.interface = GUI()  # Creamos la instancia de GUI
         self.interface.show()
-        sys.exit(app.exec_())  # Ejecutamos el bucle principal de la GUI
+        sys.exit(app.exec())  # Ejecutamos el bucle principal de la GUI
 
     def ejecutar(self):
         # Seleccionar la interfaz
