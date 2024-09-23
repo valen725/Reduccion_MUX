@@ -42,3 +42,69 @@ class Reduccion:
         # Recalcula el número de entradas a partir de las variables selectoras
         numero_entradas = 2 ** variables_selectoras
         return numero_entradas
+    
+    def generar_tabla_mux(self, numero_entradas):
+        print("TABLA MUX")
+        # Genera combinaciones en formato decimal para A' y A
+        combinaciones = list(range(2 ** numero_entradas))
+        mitad = len(combinaciones) // 2  # Dividimos en dos mitades
+
+        # Ajustamos la cantidad de combinaciones para mostrar solo las necesarias
+        fila_A_negada = combinaciones[:mitad]  # A'
+        fila_A = combinaciones[mitad:mitad + len(fila_A_negada)]  # A, solo tomamos las necesarias
+
+        # Crear la tabla final con las combinaciones decimales
+        tabla = [
+            ["A'"] + fila_A_negada,  # Fila de A'
+            ["A"] + fila_A  # Fila de A
+        ]
+
+        # Nombres de las columnas (I0, I1, I2, etc.)
+        columnas = [f'I{i}' for i in range(len(fila_A_negada))]
+
+        return tabla, columnas
+    
+    def marcar_minterms(self, fila, minterms):
+        # Marcamos los minterms en una fila con '1' si es minterm, '0' si no lo es
+        return [1 if valor in minterms else 0 for valor in fila]
+
+    def generar_tabla_mux_binarios(self, numero_entradas):
+        print("TABLA MUX CON MINTERMINOS MARCADOS")
+        # Genera combinaciones en formato decimal para A' y A
+        combinaciones = list(range(2 ** numero_entradas))
+        mitad = len(combinaciones) // 2  # Dividimos en dos mitades
+
+        fila_A_negada = combinaciones[:mitad]  # A'
+        fila_A = combinaciones[mitad:mitad + len(fila_A_negada)]  # A
+
+        # Marcar los minterms en A' y A
+        fila_A_negada_marcada = self.marcar_minterms(fila_A_negada, self.minterms)
+        fila_A_marcada = self.marcar_minterms(fila_A, self.minterms)
+
+        # Crear la tabla marcada con los minterms
+        tabla_marcada = [
+            ["A'"] + fila_A_negada_marcada,  # Fila con minterms marcados en A'
+            ["A"] + fila_A_marcada  # Fila con minterms marcados en A
+        ]
+
+        # Nombres de las columnas (I0, I1, I2, etc.)
+        columnas = [f'I{i}' for i in range(len(fila_A_negada))]
+
+        return tabla_marcada, columnas, fila_A_negada_marcada, fila_A_marcada
+
+    def comparar_columnas(self, fila_A_negada, fila_A):
+        resultado = []
+        for i in range(len(fila_A_negada)):
+            if fila_A_negada[i] == 1 and fila_A[i] == 1:
+                # Si ambos son minterms
+                resultado.append(1)
+            elif fila_A_negada[i] == 1:
+                # Si solo A' tiene el minterm
+                resultado.append("A'")
+            elif fila_A[i] == 1:
+                # Si solo A tiene el minterm
+                resultado.append("A")
+            else:
+                # Ningún minterm
+                resultado.append(0)
+        return resultado
