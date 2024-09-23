@@ -31,16 +31,14 @@ class Reduccion:
     def asignar_variable_control(self, numeroVariables):
         # Asigna la variable de control por defecto (A) o selecciona la que cambia menos
         # En este caso, tomamos por defecto la 'A', pero puedes extender esta lógica si lo necesitas.
-        variable_control = 'A'
-        print(f"\nLa variable de control asignada es: {variable_control}")
-        
-        # Calcular el número de variables selectoras
+        variable_control = 'A'   
+        # Calcular el número de variables selectoras para la reduccion
         variables_selectoras = numeroVariables - 1  # Fórmula s = n - 1
-        return variables_selectoras
+        return variables_selectoras,variable_control
     
     def recalcular_entradas(self, variables_selectoras):
         # Recalcula el número de entradas a partir de las variables selectoras
-        numero_entradas = 2 ** variables_selectoras
+        numero_entradas = pow(2,variables_selectoras)
         return numero_entradas
     
     def generar_tabla_mux(self, numero_entradas):

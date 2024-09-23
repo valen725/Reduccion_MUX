@@ -23,6 +23,9 @@ class UI:
     def mostrar_num_entradas(self,numero_variables):
         print("Numero de entradas iniciales del MUX: ", 2 ** numero_variables )
 
+    def mostrar_variable_de_control(self,variable_control):
+        print(f"\nLa variable de control asignada es: {variable_control}")
+
 
     def mostrar_variables_selectoras(self, numero_variables_iniciales, numero_variables_selectoras):
         # Muestra el número de variables iniciales y selectoras

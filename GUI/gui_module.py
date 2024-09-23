@@ -51,8 +51,9 @@ class GUI(QMainWindow):
             self.mostrar_num_entradas(numero_variables)
 
             # Asignar variables selectoras
-            numero_variables_selectoras = reduccion.asignar_variable_control(numero_variables)
+            numero_variables_selectoras,variable_control = reduccion.asignar_variable_control(numero_variables)
             self.mostrar_variables_selectoras(numero_variables, numero_variables_selectoras)
+            self.mostrar_variable_control(variable_control)
 
             # Recalcular entradas y mostrar
             numero_entradas = reduccion.recalcular_entradas(numero_variables_selectoras)
@@ -70,6 +71,9 @@ class GUI(QMainWindow):
         QMessageBox.information(self, "Variables Selector", 
                             f"Número de variables selectoras iniciales: {numero_variables_iniciales}\n"
                             f"Número de variables selectoras después de la reducción: {numero_variables_selectoras}")
+    
+    def mostrar_variable_control(self,variable_control):
+        QMessageBox.information(self, "Variable de Control",f"Variable de control seleccionada: {variable_control}")
 
     def mostrar_num_variables_reducidas(self, numero_entradas):
         QMessageBox.information(self, "Variables Reducidas", f"Número de entradas del MUX luego de la reducción: {numero_entradas}")
