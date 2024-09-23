@@ -10,7 +10,7 @@ class GUI(QMainWindow):
 
         # Configuración de la ventana principal
         self.setWindowTitle('Reducción MUX')
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(0, 22, 1100, 650)
 
         # Agregar una imagen de fondo (opcional)
         self.label_fondo = QLabel(self)
