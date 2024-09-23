@@ -1,48 +1,57 @@
 # main.py
+import sys
+from PyQt5.QtWidgets import QApplication
 from ui.ui_module import UI
+from GUI.gui_module import GUI  # El nuevo GUI basado en PyQt5
 from reduccion.reduccion_module import Reduccion
 
 class Main:
     def __init__(self):
-        self.minterms = []
-        self.ui = UI()
+        self.interface = None
+
+    def seleccionar_interfaz(self):
+        print("Selecciona la interfaz:")
+        print("1. Interfaz de consola")
+        print("2. Interfaz gráfica (GUI)")
+        opcion = input("Ingresa el número de tu elección: ")
+
+        if opcion == "1":
+            self.interface = UI()
+        elif opcion == "2":
+            self.iniciar_gui()
+        else:
+            print("Opción no válida, usando interfaz de consola por defecto.")
+            self.interface = UI()
+
+    def iniciar_gui(self):
+        # Inicializamos la GUI si el usuario la elige (PyQt5)
+        app = QApplication(sys.argv)
+        self.interface = GUI()  # Creamos la instancia de GUI
+        self.interface.show()
+        sys.exit(app.exec_())  # Ejecutamos el bucle principal de la GUI
 
     def ejecutar(self):
-        # Mostrar el menú
-        self.ui.mostrar_menu()
+        # Seleccionar la interfaz
+        self.seleccionar_interfaz()
 
-        # Pedir los minitérminos al usuario
-        lista_minterminos = self.ui.ingresar_minterminos()
+        if isinstance(self.interface, UI):
+            # Lógica para la interfaz de consola
+            self.interface.mostrar_menu()
 
-        # Se realiza una copia de la lista para calcular el número de variables que se requieren
-        copia_lista_minterminos = lista_minterminos.copy()  # Hacemos una copia para futuras manipulaciones
-        
-        # Crear una instancia de la clase Reduccion con los minitérminos
-        reduccion = Reduccion(lista_minterminos)  # Ahora listaMinterminos tiene los datos
-        
-         # Se obtiene el número de variables necesario del mayor número en la lista
-        numero_variables = reduccion.calcular_variables(copia_lista_minterminos)
+            lista_minterminos = self.interface.ingresar_minterminos()
 
-        # Construccion de la tabla de verdad
-        tabla_verdad,numero_bits = reduccion.crear_tabla_verdad()
-        self.ui.imprimir_tabla_verdad(tabla_verdad,numero_bits)
+            reduccion = Reduccion(lista_minterminos)
+            numero_variables = reduccion.calcular_variables(lista_minterminos)
+            tabla_verdad, num_bits = reduccion.crear_tabla_verdad()
 
-        #  Mostrar las variables iniciales requeridas
-        self.ui.mostrar_num_entradas(numero_variables)
+            self.interface.imprimir_tabla_verdad(tabla_verdad, num_bits)
+            self.interface.mostrar_num_entradas(numero_variables)
 
-        # Asignar la variable de control y obtener el número de variables selectoras
-        numero_variables_selectoras = reduccion.asignar_variable_control(numero_variables)
-        
-        # Mostrar las variables iniciales y selectoras usando la UI
-        self.ui.mostrar_variables_selectoras(numero_variables, numero_variables_selectoras)
+            numero_variables_selectoras = reduccion.asignar_variable_control(numero_variables)
+            self.interface.mostrar_variables_selectoras(numero_variables, numero_variables_selectoras)
 
-        # Recalcular el número de entradas usando el número de variables selectoras
-        numero_entradas = reduccion.recalcular_entradas(numero_variables_selectoras)
-
-        self.ui.mostrar_num_variables_reducidas(numero_entradas)
-        # Se obtiene el número de variables necesario del mayor número en la lista
-        numero_variables = reduccion.calcular_variables(copia_lista_minterminos)
-
+            numero_entradas = reduccion.recalcular_entradas(numero_variables_selectoras)
+            self.interface.mostrar_num_variables_reducidas(numero_entradas)
 
 if __name__ == "__main__":
     main = Main()
