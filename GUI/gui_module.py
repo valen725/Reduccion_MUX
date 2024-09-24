@@ -1,92 +1,189 @@
-# gui/gui_module.py
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QLineEdit, QMessageBox
-from PyQt6.QtGui import QPixmap
+from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget, QTextEdit, QVBoxLayout, QLabel, QWidget
+from PyQt5 import QtWidgets
 from reduccion.reduccion_module import Reduccion
 import string
+from tabulate import tabulate
+
+# Importar el diseño generado por Qt Designer
+from MENU_PRINCIPAL import Ui_MainWindow as MenuPrincipalWindow  # Diseño del menú principal
+from ventana_resultados import Ui_MainWindow as ResultadosWindow  # Diseño de la segunda ventana
+
 
 class GUI(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        # Configuración de la ventana principal
-        self.setWindowTitle('Reducción MUX')
-        self.setGeometry(0, 22, 1100, 650)
+        # Crear el stacked widget para cambiar entre vistas
+        self.stacked_widget = QStackedWidget(self)
+        self.setCentralWidget(self.stacked_widget)
 
-        # Agregar una imagen de fondo (opcional)
-        self.label_fondo = QLabel(self)
-        self.pixmap = QPixmap("fondo.png")  # Asegúrate de tener la imagen en tu directorio
-        self.label_fondo.setPixmap(self.pixmap)
-        self.label_fondo.setGeometry(0, 0, 800, 600)
+        # Inicializar la vista del menú principal con el diseño generado
+        self.menu_widget = QMainWindow()
+        self.vista_menu = MenuPrincipalWindow()
+        self.vista_menu.setupUi(self.menu_widget)
 
-        # Campo para ingresar los minterms
-        self.label_minterms = QLabel("Ingrese los minterms:", self)
-        self.label_minterms.setGeometry(50, 50, 200, 30)
-        self.entry_minterms = QLineEdit(self)
-        self.entry_minterms.setGeometry(200, 50, 400, 30)
+        # Agregar el menú principal al stacked_widget
+        self.stacked_widget.addWidget(self.menu_widget)
 
-        # Botón para generar la tabla de verdad
-        self.btn_generar = QPushButton('Generar Tablas', self)
-        self.btn_generar.setGeometry(300, 100, 200, 40)
-        self.btn_generar.clicked.connect(self.generar_tabla_verdad)
+        # Crear la segunda vista (resultados) con el diseño generado
+        self.resultados_widget = QMainWindow()
+        self.vista_resultados = ResultadosWindow()
+        self.vista_resultados.setupUi(self.resultados_widget)
 
-    def generar_tabla_verdad(self):
-        minterms_text = self.entry_minterms.text()
+        # Asegurarse de que el scroll area ocupe todo el espacio
+        self.vista_resultados.scrollArea.setWidgetResizable(True)
+
+        # Crear un contenedor para el contenido del scroll
+        self.scroll_content = QWidget()
+        self.scroll_layout = QVBoxLayout(self.scroll_content)
+        self.vista_resultados.scrollArea.setWidget(self.scroll_content)
+
+        # Agregar la vista de resultados al stacked_widget
+        self.stacked_widget.addWidget(self.resultados_widget)
+
+        # Conectar el botón "Iniciar Reducción" a la lógica
+        self.vista_menu.pushButton_2.clicked.connect(self.iniciar_reduccion)
+
+        # Conectar el botón "Volver al menú principal" de la ventana de resultados
+        self.vista_resultados.boton_volver_menu.clicked.connect(self.volver_menu_principal)
+
+    def iniciar_reduccion(self):
+        # Limpiar el contenido del área de scroll antes de añadir nuevos resultados
+        while self.scroll_layout.count():
+            child = self.scroll_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
+
+        # Obtener los minterms ingresados por el usuario desde la línea de entrada
+        minterms_text = self.vista_menu.lineEdit.text()
 
         try:
             # Convertir los minterms ingresados por el usuario
-            minterms = sorted(list(map(int, minterms_text.split(','))))
+            self.minterms = sorted(list(map(int, minterms_text.split(','))))
+            self.reduccion = Reduccion(self.minterms)
 
-            # Usar el módulo de Reduccion para generar la tabla de verdad
-            reduccion = Reduccion(minterms)
-            tabla_verdad, num_bits = reduccion.crear_tabla_verdad()
-
-            # Mostrar la tabla de verdad en una ventana emergente
+            # Generar la tabla de verdad
+            tabla_verdad, num_bits = self.reduccion.crear_tabla_verdad()
             headers = list(string.ascii_uppercase[:num_bits]) + ['Salida']
             tabla_formateada = "\n".join(["\t".join(map(str, fila)) for fila in tabla_verdad])
-            QMessageBox.information(self, "Tabla de Verdad", f"{headers}\n{tabla_formateada}")
 
-            # Mostrar el número de entradas iniciales
-            numero_variables = reduccion.calcular_variables(minterms)
-            self.mostrar_num_entradas(numero_variables)
+            # Mostrar la tabla de verdad en el área de texto
+            tabla_verdad_output = QTextEdit(self.scroll_content)
+            tabla_verdad_output.setReadOnly(True)
+            tabla_verdad_output.setText(f"{headers}\n{tabla_formateada}")
+            self.scroll_layout.addWidget(tabla_verdad_output)
 
-            # Asignar variables selectoras
-            numero_variables_selectoras, variable_control = reduccion.asignar_variable_control(numero_variables)
-            self.mostrar_variables_selectoras(numero_variables, numero_variables_selectoras)
-            self.mostrar_variable_control(variable_control)
+            # Mostrar toda la informacion referente al MUX
+            informacion_output = QTextEdit(self.scroll_content) # Aquí se imprime la informacion
+            informacion_output.setReadOnly(True)
 
-            # Recalcular entradas y mostrar
-            numero_entradas = reduccion.recalcular_entradas(numero_variables_selectoras)
-            self.mostrar_num_variables_reducidas(numero_entradas)
+            # el número de entradas iniciales
+            numero_variables = self.reduccion.calcular_variables(self.minterms)
+            impresion_numero_entradas=self.mostrar_num_entradas(numero_variables) #####
 
-            # Generar la tabla MUX
-            tabla_mux, columnas_mux = reduccion.generar_tabla_mux(numero_variables)
-            tabla_mux_formateada = "\n".join(["\t".join(map(str, fila)) for fila in tabla_mux])
-            QMessageBox.information(self, "Tabla MUX", f"Columnas: {columnas_mux}\n{tabla_mux_formateada}")
+            
 
-            # Generar la tabla MUX Binaria con minterms marcados
-            tabla_marcada, columnas_marcadas, fila_A_negada_marcada, fila_A_marcada = reduccion.generar_tabla_mux_binarios(numero_variables)
-            tabla_marcada_formateada = "\n".join(["\t".join(map(str, fila)) for fila in tabla_marcada])
-            QMessageBox.information(self, "Tabla MUX Binaria", f"Columnas: {columnas_marcadas}\n{tabla_marcada_formateada}")
+            # Mostrar las variables selectoras
+            numero_variables_selectoras,variable_control = self.reduccion.asignar_variable_control(numero_variables)
+            impresion_variables_selectoras=self.mostrar_variables_selectoras(numero_variables, numero_variables_selectoras) #####
 
-            # Comparar columnas y mostrar el resultado
-            resultado = reduccion.comparar_columnas(fila_A_negada_marcada, fila_A_marcada)
-            QMessageBox.information(self, "Resultado de la Comparación", f"Resultado: {resultado}")
+            # Mostrar variable de control a utilizar
+            impresion_variable_de_control=self.mostrar_variable_control(variable_control) ######
+
+            # Mostrar el número de entradas reducidas
+            numero_entradas = self.reduccion.recalcular_entradas(numero_variables_selectoras)
+            impresion_variables_reducidas=self.mostrar_num_variables_reducidas(numero_entradas)######
+
+            # Generar tabla final
+            tabla,columnas=self.reduccion.generar_tabla_mux(numero_variables)
+            impresion_tabla_final=self.imprimir_tabla_final(tabla,columnas)
+
+            # Generar tabla MUX
+            tabla_marcada,columnas_tabla_marcada,fila_A_negada_marcada, fila_A_marcada=self.reduccion.generar_tabla_mux_binarios(numero_variables)
+            impresion_tabla_mux_final=self.imprimir_tabla_final(tabla_marcada,columnas_tabla_marcada)
+
+
+            # AGREGAR TODA LA INFORMACION DE LA REDUCCION EN LA VENTANA
+            informacion_output.setText(f"{impresion_numero_entradas}{impresion_variables_selectoras}\n{impresion_variable_de_control}\n{impresion_variables_reducidas}\n\n{impresion_tabla_final}\n\n{impresion_tabla_mux_final}")
+            self.scroll_layout.addWidget(informacion_output)
+
+            # IMPRIMIR EL RESULTADO FINAL DE LA REDUCCIÓN
+            resultado = self.reduccion.comparar_columnas(fila_A_negada_marcada, fila_A_marcada)
+            self.imprimir_resultado(resultado)
+
+
+            # Cambiar a la vista de resultados
+            self.stacked_widget.setCurrentWidget(self.resultados_widget)
 
         except ValueError:
-            # Mostrar error si la entrada no es válida
-            QMessageBox.critical(self, "Error", "Entrada inválida. Ingrese números separados por comas.")
+            error_output = QLabel("Error: Entrada inválida. Ingrese números separados por comas.")
+            self.scroll_layout.addWidget(error_output)
+            self.stacked_widget.setCurrentWidget(self.resultados_widget)
+
 
     def mostrar_num_entradas(self, numero_variables):
+        #resultados_output= QTextEdit(self.scroll_content)
+        #resultados_output.setReadOnly(True)
         numero_entradas = 2 ** numero_variables
-        QMessageBox.information(self, "Número de Entradas", f"Número de entradas iniciales del MUX: {numero_entradas}")
+        impresion=(f"Numero de entradas del MUX: {numero_entradas}\n")
+        return impresion
+        #self.scroll_layout.addWidget(resultados_output)
+        #label_entradas = QLabel(f"Numero de entradas iniciales del MUX: {numero_entradas}")
+        #self.scroll_layout.addWidget(label_entradas)
+
+
 
     def mostrar_variables_selectoras(self, numero_variables_iniciales, numero_variables_selectoras):
-        QMessageBox.information(self, "Variables Selector", 
-                            f"Número de variables selectoras iniciales: {numero_variables_iniciales}\n"
-                            f"Número de variables selectoras después de la reducción: {numero_variables_selectoras}")
-    
-    def mostrar_variable_control(self, variable_control):
-        QMessageBox.information(self, "Variable de Control", f"Variable de control seleccionada: {variable_control}")
+        impresion=(f"Número de variables selectoras iniciales: {numero_variables_iniciales}\nNúmero de variables selectoras después de la reducción: {numero_variables_selectoras}")
+        return impresion
+        #label_selectoras_iniciales = QLabel(f"Número de variables selectoras iniciales: {numero_variables_iniciales}")
+        #self.scroll_layout.addWidget(label_selectoras_iniciales)
+
+
+    def mostrar_variable_control(self,variable_control):
+        impresion=(f"Variable de control: {variable_control}")
+        return impresion
 
     def mostrar_num_variables_reducidas(self, numero_entradas):
-        QMessageBox.information(self, "Variables Reducidas", f"Número de entradas del MUX luego de la reducción: {numero_entradas}")
+        impresion=(f"Número de entradas del MUX luego de la reducción: {numero_entradas}")
+        return impresion
+        #label_entradas_reducidas = QLabel(f"Número de entradas del MUX luego de la reducción: {numero_entradas}")
+        #self.scroll_layout.addWidget(label_entradas_reducidas)
+
+    def imprimir_tabla_final(self, tabla, columnas):
+        # Formatear todos los números en la tabla para que tengan dos dígitos
+        tabla_formateada = [[f"{elemento:02d}" if isinstance(elemento, int) else str(elemento) for elemento in fila] for fila in tabla]
+        # Crear una tabla formateada con tabulate
+        tabla_final = tabulate(tabla_formateada, headers=[""] + columnas, tablefmt="grid")
+        #tabla_formateada = tabulate(tabla, headers=[""] + columnas, tablefmt="grid")
+        return tabla_final
+    
+    def imprimir_resultado(self,resultado):
+        resultados_output=QLabel(f"RESULTADO FINAL: {resultado}")
+        self.scroll_layout.addWidget(resultados_output)
+
+    def volver_menu_principal(self):
+        # Limpiar resultados para la siguiente ejecución
+        while self.scroll_layout.count():
+            child = self.scroll_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
+
+        # Cambiar de nuevo a la vista del menú principal
+        self.stacked_widget.setCurrentWidget(self.menu_widget)
+
+
+if __name__ == "__main__":
+    app = QApplication([])
+    window = GUI()
+    window.show()
+    app.exec_()
+
+
+
+
+
+
+
+
+

@@ -38,7 +38,7 @@ class Reduccion:
     
     def recalcular_entradas(self, variables_selectoras):
         # Recalcula el número de entradas a partir de las variables selectoras
-        numero_entradas = pow(2,variables_selectoras)
+        numero_entradas = 2 ** variables_selectoras
         return numero_entradas
     
     def generar_tabla_mux(self, numero_entradas):

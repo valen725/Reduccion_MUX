@@ -23,9 +23,9 @@ class UI:
     def mostrar_num_entradas(self,numero_variables):
         print("Numero de entradas iniciales del MUX: ", 2 ** numero_variables )
 
+    
     def mostrar_variable_de_control(self,variable_control):
         print(f"\nLa variable de control asignada es: {variable_control}")
-
 
     def mostrar_variables_selectoras(self, numero_variables_iniciales, numero_variables_selectoras):
         # Muestra el número de variables iniciales y selectoras
@@ -33,7 +33,7 @@ class UI:
         print(f"Número de variables selectoras después de la reducción: {numero_variables_selectoras}")
 
     def mostrar_num_variables_reducidas(self,numero_entradas):
-        print("Numero de entradas del MUX, luego, de realizar la reducción: ",numero_entradas )
+        print("Numero de entradas del MUX, luego, de realizar la reducción:  ",numero_entradas )
 
     def imprimir_tabla(self, tabla, columnas):
         print(tabulate(tabla, headers=[""] + columnas, tablefmt="grid"))
@@ -41,4 +41,3 @@ class UI:
     def imprimir_resultado(self, resultado):
         # Imprimir el resultado sin formato de tabla, solo como una lista simple
         print("Resultado de la comparación de columnas:", resultado)
-  

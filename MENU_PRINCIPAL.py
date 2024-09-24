@@ -59,7 +59,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("ReduccionMUX", "ReduccionMUX"))
         self.lineEdit.setPlaceholderText(_translate("MainWindow", "INGRESE LA FUNCIÓN: 0,4,9.."))
         self.label.setText(_translate("MainWindow", "REDUCCIÓN DE MUX"))
         self.pushButton_2.setText(_translate("MainWindow", "INICIAR REDUCCIÓN "))

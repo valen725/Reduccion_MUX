@@ -24,7 +24,7 @@ class Main:
             self.interface = UI()
 
     def iniciar_gui(self):
-        # Inicializamos la GUI si el usuario la elige (PyQt6)
+        # Inicializamos la GUI si el usuario la elige (PyQt5)
         app = QApplication(sys.argv)
         self.interface = GUI()  # Creamos la instancia de GUI
         self.interface.show()
@@ -51,6 +51,7 @@ class Main:
             numero_variables_selectoras,variable_control = reduccion.asignar_variable_control(numero_variables)
             self.interface.mostrar_variable_de_control(variable_control)
             self.interface.mostrar_variables_selectoras(numero_variables, numero_variables_selectoras)
+            
 
             numero_entradas = reduccion.recalcular_entradas(numero_variables_selectoras)
             self.interface.mostrar_num_variables_reducidas(numero_entradas)

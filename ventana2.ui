@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1123</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1123</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1123</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>ReduccionMUX2</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-image: url(:/cct/fondo.jpg);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="boton_volver_menu">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>191</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 700 10pt &quot;Times New Roman&quot;;
+background-color: rgb(255, 255, 255);
+border-bottom-color: rgb(0, 0, 255);
+border-color: rgb(0, 0, 255);
+selection-background-color: rgb(170, 255, 255);
+selection-color: rgb(170, 255, 255);
+gridline-color: rgb(0, 0, 255);
+alternate-background-color: rgb(170, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>VOLVER AL MENU PRINCIPAL</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_resultados">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>0</y>
+      <width>401</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 50pt &quot;Segoe UI&quot;;
+color: rgb(85, 255, 255);
+border-color: rgb(85, 255, 255);
+
+
+
+</string>
+    </property>
+    <property name="text">
+     <string>RESULTADOS</string>
+    </property>
+   </widget>
+   <widget class="QScrollArea" name="scrollArea">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>1101</width>
+      <height>581</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollContents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1099</width>
+       <height>579</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1123</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources>
+  <include location="imagenes.qrc"/>
+ </resources>
+ <connections/>
+</ui>
