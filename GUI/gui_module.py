@@ -65,15 +65,16 @@ class GUI(QMainWindow):
             # Generar la tabla de verdad
             tabla_verdad, num_bits = self.reduccion.crear_tabla_verdad()
             headers = list(string.ascii_uppercase[:num_bits]) + ['Salida']
-            tabla_formateada = "\n".join(["\t".join(map(str, fila)) for fila in tabla_verdad])
+            tabla_formateada = tabulate(tabla_verdad, headers=headers, tablefmt="grid")
+            #tabla_formateada = "\n".join(["\t".join(map(str, fila)) for fila in tabla_verdad])
 
             # Mostrar la tabla de verdad en el área de texto
             tabla_verdad_output = QTextEdit(self.scroll_content)
             tabla_verdad_output.setReadOnly(True)
-            tabla_verdad_output.setText(f"{headers}\n{tabla_formateada}")
+            tabla_verdad_output.setText(f"{tabla_formateada}")
             self.scroll_layout.addWidget(tabla_verdad_output)
 
-            # Mostrar toda la informacion referente al MUX
+            # Inicializar (Mostrar toda la informacion referente al MUX)
             informacion_output = QTextEdit(self.scroll_content) # Aquí se imprime la informacion
             informacion_output.setReadOnly(True)
 
