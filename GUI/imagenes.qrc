@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="cct">
+    <file>multiplexor4.png</file>
+    <file>fondo.jpg</file>
+  </qresource>
+</RCC>
