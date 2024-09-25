@@ -68,57 +68,56 @@ class GUI(QMainWindow):
             tabla_verdad, num_bits = self.reduccion.crear_tabla_verdad()
             headers = list(string.ascii_uppercase[:num_bits]) + ['Salida']
             tabla_formateada = tabulate(tabla_verdad, headers=headers, tablefmt="grid")
-            #tabla_formateada = "\n".join(["\t".join(map(str, fila)) for fila in tabla_verdad])
 
             # Mostrar la tabla de verdad en el área de texto
             tabla_verdad_output = QTextEdit(self.scroll_content)
             tabla_verdad_output.setReadOnly(True)
 
-            font=QFont("Courier",8)
+            # Configurar el scroll horizontal en la tabla de verdad
+            tabla_verdad_output.setLineWrapMode(QTextEdit.NoWrap)  # Desactivar el ajuste automático de línea
+            font = QFont("Courier", 8)
             tabla_verdad_output.setFont(font)
-
             tabla_verdad_output.setText(f"{tabla_formateada}")
             self.scroll_layout.addWidget(tabla_verdad_output)
 
             # Inicializar (Mostrar toda la informacion referente al MUX)
-            informacion_output = QTextEdit(self.scroll_content) # Aquí se imprime la informacion
+            informacion_output = QTextEdit(self.scroll_content)  # Aquí se imprime la informacion
             informacion_output.setReadOnly(True)
+
+            # Configurar el scroll horizontal en la tabla de reducción
+            informacion_output.setLineWrapMode(QTextEdit.NoWrap)  # Desactivar el ajuste automático de línea
+            informacion_output.setFont(font)
 
             # el número de entradas iniciales
             numero_variables = self.reduccion.calcular_variables(self.minterms)
-            impresion_numero_entradas=self.mostrar_num_entradas(numero_variables) #####
-
-            
+            impresion_numero_entradas = self.mostrar_num_entradas(numero_variables)
 
             # Mostrar las variables selectoras
-            numero_variables_selectoras,variable_control = self.reduccion.asignar_variable_control(numero_variables)
-            impresion_variables_selectoras=self.mostrar_variables_selectoras(numero_variables, numero_variables_selectoras) #####
+            numero_variables_selectoras, variable_control = self.reduccion.asignar_variable_control(numero_variables)
+            impresion_variables_selectoras = self.mostrar_variables_selectoras(numero_variables, numero_variables_selectoras)
 
             # Mostrar variable de control a utilizar
-            impresion_variable_de_control=self.mostrar_variable_control(variable_control) ######
+            impresion_variable_de_control = self.mostrar_variable_control(variable_control)
 
             # Mostrar el número de entradas reducidas
             numero_entradas = self.reduccion.recalcular_entradas(numero_variables_selectoras)
-            impresion_variables_reducidas=self.mostrar_num_variables_reducidas(numero_entradas)######
+            impresion_variables_reducidas = self.mostrar_num_variables_reducidas(numero_entradas)
 
             # Generar tabla final
-            tabla,columnas=self.reduccion.generar_tabla_mux(numero_variables)
-            impresion_tabla_final=self.imprimir_tabla_final(tabla,columnas)
+            tabla, columnas = self.reduccion.generar_tabla_mux(numero_variables)
+            impresion_tabla_final = self.imprimir_tabla_final(tabla, columnas)
 
             # Generar tabla MUX
-            tabla_marcada,columnas_tabla_marcada,fila_A_negada_marcada, fila_A_marcada=self.reduccion.generar_tabla_mux_binarios(numero_variables)
-            impresion_tabla_mux_final=self.imprimir_tabla_final(tabla_marcada,columnas_tabla_marcada)
-
+            tabla_marcada, columnas_tabla_marcada, fila_A_negada_marcada, fila_A_marcada = self.reduccion.generar_tabla_mux_binarios(numero_variables)
+            impresion_tabla_mux_final = self.imprimir_tabla_final(tabla_marcada, columnas_tabla_marcada)
 
             # AGREGAR TODA LA INFORMACION DE LA REDUCCION EN LA VENTANA
-            informacion_output.setFont(font)
             informacion_output.setText(f"{impresion_numero_entradas}{impresion_variables_selectoras}\n{impresion_variable_de_control}\n{impresion_variables_reducidas}\n\n{impresion_tabla_final}\n\n{impresion_tabla_mux_final}")
             self.scroll_layout.addWidget(informacion_output)
 
             # IMPRIMIR EL RESULTADO FINAL DE LA REDUCCIÓN
             resultado = self.reduccion.comparar_columnas(fila_A_negada_marcada, fila_A_marcada)
             self.imprimir_resultado(resultado)
-
 
             # Llama a la función para dibujar el MUX, pasando los resultados
             self.dibujar_mux(numero_entradas, resultado)
