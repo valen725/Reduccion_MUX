@@ -179,8 +179,15 @@ class GUI(QMainWindow):
         # Cambiar de nuevo a la vista del menú principal
         self.stacked_widget.setCurrentWidget(self.menu_widget)
 
+    
     def dibujar_mux(self,numero_entradas, resultados):
         fig, ax = plt.subplots(figsize=(6, 6))  # Mantener tamaño cuadrado para el MUX
+
+        # Cambiar color de fondo de la ventana
+        fig.patch.set_facecolor('lightblue')  # Fondo de la ventana
+        
+        # Cambiar color de fondo del área de los ejes (si se desea)
+        ax.set_facecolor('whitesmoke')  # Fondo del área del MUX
 
         # Dibujar entradas
         for i in range(numero_entradas):
@@ -209,14 +216,14 @@ class GUI(QMainWindow):
         num_selector_variables = numero_entradas.bit_length() - 1  # Restar 1 para mostrar una letra menos
 
         # Reducir el espacio horizontal entre las letras
-        espacio_horizontal = 0.10  # Reducir más el espacio entre letras
+        espacio_horizontal = 0.15  # Reducir más el espacio entre letras
 
         # Ajustar la posición de las letras más a la izquierda y dibujar líneas
         for j, letra in enumerate(letras[:num_selector_variables]):
-            x_pos = 1 + j * espacio_horizontal  # Mover las letras más hacia la izquierda
+            x_pos = 1.2 + j * espacio_horizontal  # Mover las letras más hacia la izquierda
             
             # Dibujar líneas desde el borde inferior del MUX hasta las letras (debajo de las letras)
-            #ax.plot([1.45 + j * espacio_horizontal, x_pos], [-0.5, -1.2], 'k-', lw=2)  # Línea diagonal ajustada
+            ax.plot([1 + j * espacio_horizontal, x_pos], [-0.5, -1], 'k-', lw=2)  # Línea diagonal ajustada
             
             # Ahora dibujamos las letras para que queden por encima de las líneas
             ax.text(x_pos, -1.25, f'{letra}',  # Ajustar la posición vertical para reducir el espacio
@@ -230,9 +237,8 @@ class GUI(QMainWindow):
         # Quitar los ejes
         ax.axis('off')
         
-        plt.title('Representación del MUX')
+        plt.title('REPRESENTACIÓN DEL MUX')
         plt.show()
-
 
 if __name__ == "__main__":
     app = QApplication([])
