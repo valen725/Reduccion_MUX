@@ -3,6 +3,7 @@ from PyQt5 import QtWidgets
 from reduccion.reduccion_module import Reduccion
 import string
 from tabulate import tabulate
+import matplotlib.pyplot as plt
 
 # Importar el diseño generado por Qt Designer
 from MENU_PRINCIPAL import Ui_MainWindow as MenuPrincipalWindow  # Diseño del menú principal
@@ -113,6 +114,11 @@ class GUI(QMainWindow):
             self.imprimir_resultado(resultado)
 
 
+            # Llama a la función para dibujar el MUX, pasando los resultados
+            self.dibujar_mux(numero_entradas, resultado)
+
+
+
             # Cambiar a la vista de resultados
             self.stacked_widget.setCurrentWidget(self.resultados_widget)
 
@@ -172,6 +178,28 @@ class GUI(QMainWindow):
 
         # Cambiar de nuevo a la vista del menú principal
         self.stacked_widget.setCurrentWidget(self.menu_widget)
+
+    def dibujar_mux(self, numero_entradas, resultados):
+        fig, ax = plt.subplots()
+
+        # Dibujar entradas
+        for i in range(numero_entradas):
+            ax.plot([0, 1], [2 - i, 2 - i], 'k-', lw=2)
+            # Mostrar la entrada con su resultado
+            ax.text(-0.1, 2 - i, f'I{i}: {resultados[i]}', verticalalignment='center', horizontalalignment='right')
+
+        # Dibujar salida
+        ax.plot([2, 3], [1, 1], 'k-', lw=2)
+        ax.text(3.1, 1, 'Salida', verticalalignment='center', horizontalalignment='left')
+
+        # Dibujar líneas de control (selector)
+        ax.plot([1, 1], [0, 2 - numero_entradas], 'k--', lw=2)  # Línea de selección
+        ax.text(1.5, 0.5, 'Selector', verticalalignment='center', horizontalalignment='center', fontsize=12, fontweight='bold')
+
+        ax.axis('off')
+        plt.title('Representación del MUX')
+        plt.show()
+
 
 
 if __name__ == "__main__":
