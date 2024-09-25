@@ -179,27 +179,36 @@ class GUI(QMainWindow):
         # Cambiar de nuevo a la vista del menú principal
         self.stacked_widget.setCurrentWidget(self.menu_widget)
 
-    def dibujar_mux(self, numero_entradas, resultados):
-        fig, ax = plt.subplots()
+    def dibujar_mux(self,numero_entradas, resultados):
+        fig, ax = plt.subplots(figsize=(8, 6))  # Aumentar el tamaño de la figura para más espacio
 
         # Dibujar entradas
         for i in range(numero_entradas):
-            ax.plot([0, 1], [2 - i, 2 - i], 'k-', lw=2)
+            ax.plot([0, 1], [numero_entradas - i, numero_entradas - i], 'k-', lw=2)
             # Mostrar la entrada con su resultado
-            ax.text(-0.1, 2 - i, f'I{i}: {resultados[i]}', verticalalignment='center', horizontalalignment='right')
+            ax.text(-0.1, numero_entradas - i, f'Entrada {i}: {resultados[i]}', 
+                    verticalalignment='center', horizontalalignment='right')
 
         # Dibujar salida
-        ax.plot([2, 3], [1, 1], 'k-', lw=2)
-        ax.text(3.1, 1, 'Salida', verticalalignment='center', horizontalalignment='left')
+        ax.plot([2, 3], [numero_entradas / 2, numero_entradas / 2], 'k-', lw=2)
+        ax.text(3.1, numero_entradas / 2, 'Salida', 
+                verticalalignment='center', horizontalalignment='left')
 
-        # Dibujar líneas de control (selector)
-        ax.plot([1, 1], [0, 2 - numero_entradas], 'k--', lw=2)  # Línea de selección
-        ax.text(1.5, 0.5, 'Selector', verticalalignment='center', horizontalalignment='center', fontsize=12, fontweight='bold')
+        # Dibujar línea de control (selector)
+        ax.plot([1, 1], [0, numero_entradas], 'k--', lw=2)  # Línea de selección
+        ax.text(1.5, numero_entradas / 2, f'MUX {numero_entradas} x 1',
+                verticalalignment='center', horizontalalignment='center', 
+                fontsize=12, fontweight='bold')
 
+        # Ajustar los límites del gráfico para que se vea mejor
+        ax.set_xlim(-0.5, 3.5)  # Ajuste horizontalmente
+        ax.set_ylim(0, numero_entradas + 1)  # Ajuste verticalmente según el número de entradas
+
+        # Quitar los ejes
         ax.axis('off')
+        
         plt.title('Representación del MUX')
         plt.show()
-
 
 
 if __name__ == "__main__":
