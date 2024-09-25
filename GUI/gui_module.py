@@ -127,23 +127,14 @@ class GUI(QMainWindow):
 
 
     def mostrar_num_entradas(self, numero_variables):
-        #resultados_output= QTextEdit(self.scroll_content)
-        #resultados_output.setReadOnly(True)
         numero_entradas = 2 ** numero_variables
         impresion=(f"Numero de entradas del MUX: {numero_entradas}\n")
         return impresion
-        #self.scroll_layout.addWidget(resultados_output)
-        #label_entradas = QLabel(f"Numero de entradas iniciales del MUX: {numero_entradas}")
-        #self.scroll_layout.addWidget(label_entradas)
-
-
+ 
 
     def mostrar_variables_selectoras(self, numero_variables_iniciales, numero_variables_selectoras):
         impresion=(f"Número de variables selectoras iniciales: {numero_variables_iniciales}\nNúmero de variables selectoras después de la reducción: {numero_variables_selectoras}")
         return impresion
-        #label_selectoras_iniciales = QLabel(f"Número de variables selectoras iniciales: {numero_variables_iniciales}")
-        #self.scroll_layout.addWidget(label_selectoras_iniciales)
-
 
     def mostrar_variable_control(self,variable_control):
         impresion=(f"Variable de control: {variable_control}")
@@ -152,8 +143,6 @@ class GUI(QMainWindow):
     def mostrar_num_variables_reducidas(self, numero_entradas):
         impresion=(f"Número de entradas del MUX luego de la reducción: {numero_entradas}")
         return impresion
-        #label_entradas_reducidas = QLabel(f"Número de entradas del MUX luego de la reducción: {numero_entradas}")
-        #self.scroll_layout.addWidget(label_entradas_reducidas)
 
     def imprimir_tabla_final(self, tabla, columnas):
         # Formatear todos los números en la tabla para que tengan dos dígitos
