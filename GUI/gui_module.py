@@ -179,14 +179,13 @@ class GUI(QMainWindow):
         # Cambiar de nuevo a la vista del menú principal
         self.stacked_widget.setCurrentWidget(self.menu_widget)
 
-    def dibujar_mux(self,numero_entradas, resultados):
+    def dibujar_mux(self, numero_entradas, resultados):
         fig, ax = plt.subplots(figsize=(8, 6))  # Aumentar el tamaño de la figura para más espacio
 
         # Dibujar entradas
         for i in range(numero_entradas):
             ax.plot([0, 1], [numero_entradas - i, numero_entradas - i], 'k-', lw=2)
-            # Mostrar la entrada con su resultado
-            ax.text(-0.1, numero_entradas - i, f'Entrada {i}: {resultados[i]}', 
+            ax.text(-0.1, numero_entradas - i, f'I{i}: {resultados[i]}', 
                     verticalalignment='center', horizontalalignment='right')
 
         # Dibujar salida
@@ -200,9 +199,20 @@ class GUI(QMainWindow):
                 verticalalignment='center', horizontalalignment='center', 
                 fontsize=12, fontweight='bold')
 
+        # **Aquí dibujamos las líneas discontinuas del MUX**
+        # Línea vertical izquierda discontinua
+        ax.plot([1, 1], [-0.5, numero_entradas + 0.5], 'k--', lw=2)  # Lado izquierdo del MUX (línea discontinua)
+
+        # Línea vertical derecha discontinua
+        ax.plot([2, 2], [-0.5, numero_entradas + 0.5], 'k--', lw=2)  # Lado derecho del MUX (línea discontinua)
+
+        # Líneas horizontales superior e inferior discontinuas
+        ax.plot([1, 2], [numero_entradas + 0.5, numero_entradas + 0.5], 'k--', lw=2)  # Línea superior del MUX
+        ax.plot([1, 2], [-0.5, -0.5], 'k--', lw=2)  # Línea inferior del MUX
+
         # Ajustar los límites del gráfico para que se vea mejor
         ax.set_xlim(-0.5, 3.5)  # Ajuste horizontalmente
-        ax.set_ylim(0, numero_entradas + 1)  # Ajuste verticalmente según el número de entradas
+        ax.set_ylim(-0.5, numero_entradas + 0.5)  # Ajuste verticalmente según el número de entradas
 
         # Quitar los ejes
         ax.axis('off')
