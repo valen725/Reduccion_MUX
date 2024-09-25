@@ -74,7 +74,7 @@ class GUI(QMainWindow):
             tabla_verdad_output = QTextEdit(self.scroll_content)
             tabla_verdad_output.setReadOnly(True)
 
-            font=QFont("Courier")
+            font=QFont("Courier",8)
             tabla_verdad_output.setFont(font)
 
             tabla_verdad_output.setText(f"{tabla_formateada}")
@@ -111,6 +111,7 @@ class GUI(QMainWindow):
 
 
             # AGREGAR TODA LA INFORMACION DE LA REDUCCION EN LA VENTANA
+            informacion_output.setFont(font)
             informacion_output.setText(f"{impresion_numero_entradas}{impresion_variables_selectoras}\n{impresion_variable_de_control}\n{impresion_variables_reducidas}\n\n{impresion_tabla_final}\n\n{impresion_tabla_mux_final}")
             self.scroll_layout.addWidget(informacion_output)
 
