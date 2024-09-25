@@ -179,8 +179,8 @@ class GUI(QMainWindow):
         # Cambiar de nuevo a la vista del menú principal
         self.stacked_widget.setCurrentWidget(self.menu_widget)
 
-    def dibujar_mux(self, numero_entradas, resultados):
-        fig, ax = plt.subplots(figsize=(8, 6))  # Aumentar el tamaño de la figura para más espacio
+    def dibujar_mux(self,numero_entradas, resultados):
+        fig, ax = plt.subplots(figsize=(6, 6))  # Mantener tamaño cuadrado para el MUX
 
         # Dibujar entradas
         for i in range(numero_entradas):
@@ -193,44 +193,45 @@ class GUI(QMainWindow):
         ax.text(3.1, numero_entradas / 2, 'Salida', 
                 verticalalignment='center', horizontalalignment='left')
 
-        # Dibujar línea de control (selector)
-        ax.plot([1, 1], [0, numero_entradas], 'k--', lw=2)  # Línea de selección
+        # Dibujar el cuadrado (MUX)
+        ax.plot([1, 1], [-0.5, numero_entradas + 0.5], 'k--', lw=2)  # Lado izquierdo del MUX
+        ax.plot([2, 2], [-0.5, numero_entradas + 0.5], 'k--', lw=2)  # Lado derecho del MUX
+        ax.plot([1, 2], [numero_entradas + 0.5, numero_entradas + 0.5], 'k--', lw=2)  # Línea superior
+        ax.plot([1, 2], [-0.5, -0.5], 'k--', lw=2)  # Línea inferior
+
+        # Texto del MUX
         ax.text(1.5, numero_entradas / 2, f'MUX {numero_entradas} x 1',
                 verticalalignment='center', horizontalalignment='center', 
                 fontsize=12, fontweight='bold')
 
-        # **Aquí dibujamos las líneas discontinuas del MUX**
-        # Línea vertical izquierda discontinua
-        ax.plot([1, 1], [-0.5, numero_entradas + 0.5], 'k--', lw=2)  # Lado izquierdo del MUX (línea discontinua)
-
-        # Línea vertical derecha discontinua
-        ax.plot([2, 2], [-0.5, numero_entradas + 0.5], 'k--', lw=2)  # Lado derecho del MUX (línea discontinua)
-
-        # Líneas horizontales superior e inferior discontinuas
-        ax.plot([1, 2], [numero_entradas + 0.5, numero_entradas + 0.5], 'k--', lw=2)  # Línea superior del MUX
-        ax.plot([1, 2], [-0.5, -0.5], 'k--', lw=2)  # Línea inferior del MUX
-
-        # **Agregar variables selectoras horizontalmente debajo del MUX**
+        # Letras selectoras debajo del MUX
         letras = string.ascii_uppercase[1:]  # Crear lista de letras desde 'B' en adelante
         num_selector_variables = numero_entradas.bit_length() - 1  # Restar 1 para mostrar una letra menos
-        
-        for j, letra in enumerate(letras[:num_selector_variables]):  
-            # Colocar horizontalmente debajo del MUX
-            ax.text(0.9 + j * 0.5, -1, f'{letra}', 
+
+        # Reducir el espacio horizontal entre las letras
+        espacio_horizontal = 0.10  # Reducir más el espacio entre letras
+
+        # Ajustar la posición de las letras más a la izquierda y dibujar líneas
+        for j, letra in enumerate(letras[:num_selector_variables]):
+            x_pos = 1 + j * espacio_horizontal  # Mover las letras más hacia la izquierda
+            
+            # Dibujar líneas desde el borde inferior del MUX hasta las letras (debajo de las letras)
+            #ax.plot([1.45 + j * espacio_horizontal, x_pos], [-0.5, -1.2], 'k-', lw=2)  # Línea diagonal ajustada
+            
+            # Ahora dibujamos las letras para que queden por encima de las líneas
+            ax.text(x_pos, -1.25, f'{letra}',  # Ajustar la posición vertical para reducir el espacio
                     verticalalignment='center', horizontalalignment='center', 
                     fontsize=10, fontweight='bold')
 
         # Ajustar los límites del gráfico para que se vea mejor
-        ax.set_xlim(-0.5, 3.5)  # Ajuste horizontalmente
-        ax.set_ylim(-2, numero_entradas + 1)  # Ajuste verticalmente
+        ax.set_xlim(-0.5, 3.5)  # Ajuste horizontal
+        ax.set_ylim(-2, numero_entradas + 1)  # Ajuste vertical
 
         # Quitar los ejes
         ax.axis('off')
         
         plt.title('Representación del MUX')
         plt.show()
-
-
 
 
 if __name__ == "__main__":
