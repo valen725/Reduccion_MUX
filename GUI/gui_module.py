@@ -117,8 +117,6 @@ class GUI(QMainWindow):
             # Llama a la función para dibujar el MUX, pasando los resultados
             self.dibujar_mux(numero_entradas, resultado)
 
-
-
             # Cambiar a la vista de resultados
             self.stacked_widget.setCurrentWidget(self.resultados_widget)
 
@@ -184,7 +182,7 @@ class GUI(QMainWindow):
         fig, ax = plt.subplots(figsize=(6, 6))  # Mantener tamaño cuadrado para el MUX
 
         # Cambiar color de fondo de la ventana
-        fig.patch.set_facecolor('lightblue')  # Fondo de la ventana
+        fig.patch.set_facecolor('#6CF2FD')  # Fondo de la ventana
         
         # Cambiar color de fondo del área de los ejes (si se desea)
         ax.set_facecolor('whitesmoke')  # Fondo del área del MUX
