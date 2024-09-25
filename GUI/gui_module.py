@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget, QTextEdit, QVBoxLayout, QLabel, QWidget
 from PyQt5 import QtWidgets
+from PyQt5.QtGui import QFont
 from reduccion.reduccion_module import Reduccion
 import string
 from tabulate import tabulate
@@ -72,6 +73,10 @@ class GUI(QMainWindow):
             # Mostrar la tabla de verdad en el área de texto
             tabla_verdad_output = QTextEdit(self.scroll_content)
             tabla_verdad_output.setReadOnly(True)
+
+            font=QFont("Courier")
+            tabla_verdad_output.setFont(font)
+
             tabla_verdad_output.setText(f"{tabla_formateada}")
             self.scroll_layout.addWidget(tabla_verdad_output)
 
