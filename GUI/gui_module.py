@@ -210,15 +210,27 @@ class GUI(QMainWindow):
         ax.plot([1, 2], [numero_entradas + 0.5, numero_entradas + 0.5], 'k--', lw=2)  # Línea superior del MUX
         ax.plot([1, 2], [-0.5, -0.5], 'k--', lw=2)  # Línea inferior del MUX
 
+        # **Agregar variables selectoras horizontalmente debajo del MUX**
+        letras = string.ascii_uppercase[1:]  # Crear lista de letras desde 'B' en adelante
+        num_selector_variables = numero_entradas.bit_length() - 1  # Restar 1 para mostrar una letra menos
+        
+        for j, letra in enumerate(letras[:num_selector_variables]):  
+            # Colocar horizontalmente debajo del MUX
+            ax.text(0.9 + j * 0.5, -1, f'{letra}', 
+                    verticalalignment='center', horizontalalignment='center', 
+                    fontsize=10, fontweight='bold')
+
         # Ajustar los límites del gráfico para que se vea mejor
         ax.set_xlim(-0.5, 3.5)  # Ajuste horizontalmente
-        ax.set_ylim(-0.5, numero_entradas + 0.5)  # Ajuste verticalmente según el número de entradas
+        ax.set_ylim(-2, numero_entradas + 1)  # Ajuste verticalmente
 
         # Quitar los ejes
         ax.axis('off')
         
         plt.title('Representación del MUX')
         plt.show()
+
+
 
 
 if __name__ == "__main__":
